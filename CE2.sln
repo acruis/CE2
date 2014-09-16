@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CE2", "CE2\CE2.vcxproj", "{7E80BA3C-F83A-479D-AC36-B33D06E28BA9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextBuddyUnits", "TextBuddyUnits\TextBuddyUnits.vcxproj", "{A36668E7-AEBD-4752-8A9B-8DF475C21018}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E80BA3C-F83A-479D-AC36-B33D06E28BA9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7E80BA3C-F83A-479D-AC36-B33D06E28BA9}.Debug|Win32.Build.0 = Debug|Win32
+		{7E80BA3C-F83A-479D-AC36-B33D06E28BA9}.Release|Win32.ActiveCfg = Release|Win32
+		{7E80BA3C-F83A-479D-AC36-B33D06E28BA9}.Release|Win32.Build.0 = Release|Win32
+		{A36668E7-AEBD-4752-8A9B-8DF475C21018}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A36668E7-AEBD-4752-8A9B-8DF475C21018}.Debug|Win32.Build.0 = Debug|Win32
+		{A36668E7-AEBD-4752-8A9B-8DF475C21018}.Release|Win32.ActiveCfg = Release|Win32
+		{A36668E7-AEBD-4752-8A9B-8DF475C21018}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
