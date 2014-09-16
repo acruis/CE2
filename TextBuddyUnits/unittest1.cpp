@@ -6,13 +6,15 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace TextBuddyUnits
 {		
-	TEST_CLASS(UnitTest1)
+	TEST_CLASS(TextBuddyAtd)
 	{
 	public:
 		
-		TEST_METHOD(TestMethod1)
+		TEST_METHOD(testInitialize)
 		{
-			// TODO: Your test code here
+			TextBuddy* testSession = new TextBuddy("testFile.txt"); 
+			string result = testSession->processCommand("display");
+			Assert::AreEqual("testFile.txt is empty.\n", result.c_str());
 		}
 
 	};
