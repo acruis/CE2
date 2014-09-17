@@ -225,13 +225,13 @@ namespace TextBuddyUnits
 			vector<string>* result1 = testSession->giveResult();
 			unsigned expectedLength = 2;
 			Assert::AreEqual(expectedLength, result1->size());
-			Assert::AreEqual(result1->at(0).c_str(), "orange juice");
-			Assert::AreEqual(result1->at(1).c_str(), "and a slice of lemon");
+			Assert::AreEqual("ORANGE juice", result1->at(0).c_str());
+			Assert::AreEqual("and a slice of lemon", result1->at(1).c_str());
 
 			testSession->processCommand("search or");
 			Assert::AreEqual(expectedLength, result1->size());
-			Assert::AreEqual(result1->at(0).c_str(), "more sugar");
-			Assert::AreEqual(result1->at(1).c_str(), "ORANGE juice");
+			Assert::AreEqual("more water", result1->at(0).c_str());
+			Assert::AreEqual("ORANGE juice", result1->at(1).c_str());
 		}
 
 		// Test for a query search with no result

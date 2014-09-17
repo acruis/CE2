@@ -235,6 +235,12 @@ private:
 
 	string search(string command) {
 		int firstWordPos = firstSpacePosition(command);
+
+		if (textData.size() == 0) {
+			sprintf_s(buffer, FILE_EMPTY.c_str(), targetFile.c_str());
+			return buffer;
+		}
+
 		if (firstWordPos == -1) {
 			display(textData);
 			return OPERATION_SUCCESSFUL;
