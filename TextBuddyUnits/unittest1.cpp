@@ -9,10 +9,10 @@ namespace TextBuddyUnits
 	TEST_CLASS(TextBuddyAtd)
 	{
 	public:
-		
+
 		// Tests if the database is initialized correctly
 		TEST_METHOD(testInitialize) {
-			TextBuddy* testSession = new TextBuddy("testFile.txt"); 
+			TextBuddy* testSession = new TextBuddy("testFile.txt");
 
 			string result = testSession->processCommand("display");
 			Assert::AreEqual("testFile.txt is empty.\n", result.c_str());
@@ -101,6 +101,53 @@ namespace TextBuddyUnits
 			vector<string>* result3 = testSession->giveData();
 			unsigned expectedSize = 0;
 			Assert::AreEqual(expectedSize, result3->size());
+		}
+
+		// Tests to see if the program can properly sort the list items alphabetically
+		TEST_METHOD(testForSort) {
+			TextBuddy* testSession = new TextBuddy("testFile.txt");
+
+			// A mix of uppercase, lowercase and capitalized data
+			testSession->processCommand("add Izanagi");
+			testSession->processCommand("add Sandman");
+			testSession->processCommand("add Nata Taishi");
+			testSession->processCommand("add Girimehkala");
+			testSession->processCommand("add NORN");
+			testSession->processCommand("add Okuninushi");
+			testSession->processCommand("add orthrus");
+			testSession->processCommand("add kartikeya");
+			testSession->processCommand("add mithra");
+			testSession->processCommand("add Tzitzimitl");
+			testSession->processCommand("add cu Chulainn");
+			testSession->processCommand("add LEGION");
+
+			string result1 = testSession->processCommand("sort");
+			Assert::AreEqual("textFile.txt has been sorted.\n", result1.c_str());
+
+			vector<string>* result2 = testSession->giveData();
+			bool fail = false;
+			string sortedData[12] = {
+				"cu Chulainn",
+				"Girimehkala",
+				"Izanagi",
+				"kartikeya",
+				"LEGION",
+				"mithra",
+				"Nata Taishi",
+				"NORN",
+				"Okuninushi",
+				"orthrus",
+				"Sandman",
+				"Tzitzimitl"
+			};
+			int index = 0;
+			for (vector<string>::const_iterator i = result2->begin(); i != result2->end(); ++i) {
+				Assert::AreEqual(sortedData[index], *i);
+			}
+		}
+
+		TEST_METHOD(testForSearch) {
+
 		}
 	};
 }
