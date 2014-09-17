@@ -161,6 +161,7 @@ private:
 	}
 
 	// Individual command methods
+	// Extracts data to be inserted from command
 	string addNewLine(string command) {
 		int firstWordPos = firstSpacePosition(command);
 		if (firstWordPos == -1) return WRONG_COMMAND_FORMAT;
@@ -173,6 +174,7 @@ private:
 		return buffer;
 	}
 
+	// Validates command format before clearing file
 	string clearFile(string command) {
 		int firstWordPos = firstSpacePosition(command);
 		if (firstWordPos != -1) return WRONG_COMMAND_FORMAT;
@@ -184,6 +186,7 @@ private:
 		return buffer;
 	}
 
+	// Validates command format before displaying 
 	string display(string command) {
 		int firstWordPos = firstSpacePosition(command);
 		if (firstWordPos != -1) return WRONG_COMMAND_FORMAT;
@@ -202,6 +205,7 @@ private:
 		return OPERATION_SUCCESSFUL;
 	}
 
+	// Calls quickSort
 	string sortAlphabetically(string command) {
 		int firstWordPos = firstSpacePosition(command);
 		if (firstWordPos != -1) return WRONG_COMMAND_FORMAT;
@@ -213,6 +217,7 @@ private:
 		return buffer;
 	}
 
+	// Extracts index position to be deleted
 	string deleteEntry(string command) {
 		int firstWordPos = firstSpacePosition(command);
 		if (firstWordPos == -1) return WRONG_COMMAND_FORMAT;
