@@ -104,7 +104,48 @@ namespace TextBuddyUnits
 		}
 
 		// Tests to see if the program can properly sort the list items alphabetically
-		TEST_METHOD(testForSort) {
+		TEST_METHOD(testSortSuccessNoCase) {
+			TextBuddy* testSession = new TextBuddy("testFile.txt");
+
+			testSession->processCommand("add izanagi");
+			testSession->processCommand("add sandman");
+			testSession->processCommand("add nata taishi");
+			testSession->processCommand("add girimehkala");
+			testSession->processCommand("add norn");
+			testSession->processCommand("add okuninushi");
+			testSession->processCommand("add orthrus");
+			testSession->processCommand("add kartikeya");
+			testSession->processCommand("add mithra");
+			testSession->processCommand("add tzitzimitl");
+			testSession->processCommand("add cu chulainn");
+			testSession->processCommand("add legion");
+
+			string result1 = testSession->processCommand("sort");
+			Assert::AreEqual("testFile.txt has been sorted alphabetically.\n", result1.c_str());
+
+			vector<string>* result2 = testSession->giveData();
+			string sortedData[12] = {
+				"cu chulainn",
+				"girimehkala",
+				"izanagi",
+				"kartikeya",
+				"legion",
+				"mithra",
+				"nata taishi",
+				"norn",
+				"okuninushi",
+				"orthrus",
+				"sandman",
+				"tzitzimitl"
+			};
+			int index = 0;
+			for (vector<string>::const_iterator i = result2->begin(); i != result2->end(); ++i) {
+				Assert::AreEqual(sortedData[index], *i);
+				index++;
+			}
+		}
+
+		TEST_METHOD(testSortSuccessIgnoreCase) {
 			TextBuddy* testSession = new TextBuddy("testFile.txt");
 
 			// A mix of uppercase, lowercase and capitalized data
@@ -122,7 +163,7 @@ namespace TextBuddyUnits
 			testSession->processCommand("add LEGION");
 
 			string result1 = testSession->processCommand("sort");
-			Assert::AreEqual("textFile.txt has been sorted.\n", result1.c_str());
+			Assert::AreEqual("testFile.txt has been sorted alphabetically.\n", result1.c_str());
 
 			vector<string>* result2 = testSession->giveData();
 			bool fail = false;
@@ -144,6 +185,14 @@ namespace TextBuddyUnits
 			for (vector<string>::const_iterator i = result2->begin(); i != result2->end(); ++i) {
 				Assert::AreEqual(sortedData[index], *i);
 			}
+		}
+
+		// Tests if user input has more than one word in the command for sort
+		TEST_METHOD(testSortFail) {
+			TextBuddy* testSession = new TextBuddy("testFile.txt");
+
+			string result = testSession->processCommand("sort me");
+			Assert::AreEqual(WRONG_COMMAND_FORMAT, result);
 		}
 
 		TEST_METHOD(testForSearch) {
