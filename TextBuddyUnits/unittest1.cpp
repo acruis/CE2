@@ -184,6 +184,7 @@ namespace TextBuddyUnits
 			int index = 0;
 			for (vector<string>::const_iterator i = result2->begin(); i != result2->end(); ++i) {
 				Assert::AreEqual(sortedData[index], *i);
+				index++;
 			}
 		}
 

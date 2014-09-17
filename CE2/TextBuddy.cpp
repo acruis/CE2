@@ -265,21 +265,25 @@ private:
 		return command.substr(0, firstWordPos);
 	}
 
-	/*static string toLowerCase(string mixedCaseString) {
-		for (in )
-	}*/
+	static string toLowerCase(string mixedCaseString) {
+		string lowerCaseString = mixedCaseString;
+		for (int i = 0; lowerCaseString[i]; i++) {
+			lowerCaseString[i] = tolower(lowerCaseString[i]);
+		}
+		return lowerCaseString;
+	}
 
 	// Basic quickSort implementation
 	void quickSort(string unsortedArray[], int low, int high) {
 		int i = low;
 		int j = high;
-		string pivot = unsortedArray[low + (high - low) / 2];
+		string pivot = toLowerCase(unsortedArray[low + (high - low) / 2]);
 
 		while (i < j) {
-			while (unsortedArray[i] < pivot) {
+			while (toLowerCase(unsortedArray[i]) < pivot) {
 				i++;
 			}
-			while (unsortedArray[j] > pivot) {
+			while (toLowerCase(unsortedArray[j]) > pivot) {
 				j--;
 			}
 
