@@ -196,8 +196,58 @@ namespace TextBuddyUnits
 			Assert::AreEqual(WRONG_COMMAND_FORMAT, result);
 		}
 
-		TEST_METHOD(testForSearch) {
+		// Tests if search will call display
+		TEST_METHOD(testSearchEmptyQuery) {
+			TextBuddy* testSession = new TextBuddy("testFile.txt");
 
+			string result1 = testSession->processCommand("search");
+			Assert::AreEqual("testFile.txt is empty.\n", result1.c_str());
+
+			vector<string>* result2 = testSession->giveResult();
+			unsigned expectedLength = 0;
+			Assert::AreEqual(expectedLength, result2->size());
+		}
+
+		// Test for two query searches with found result
+		TEST_METHOD(testSearchForQuery) {
+			TextBuddy* testSession = new TextBuddy("testFile.txt");
+
+			// Mixture of uppercase and lowercase inputs
+			testSession->processCommand("add water");
+			testSession->processCommand("add sugar");
+			testSession->processCommand("add more water");
+			testSession->processCommand("add some vinegar");
+			testSession->processCommand("add ORANGE juice");
+			testSession->processCommand("add and a slice of lemon");
+
+			testSession->processCommand("search ice");
+
+			vector<string>* result1 = testSession->giveResult();
+			unsigned expectedLength = 2;
+			Assert::AreEqual(expectedLength, result1->size());
+			Assert::AreEqual(result1->at(0).c_str(), "orange juice");
+			Assert::AreEqual(result1->at(1).c_str(), "and a slice of lemon");
+
+			testSession->processCommand("search or");
+			Assert::AreEqual(expectedLength, result1->size());
+			Assert::AreEqual(result1->at(0).c_str(), "more sugar");
+			Assert::AreEqual(result1->at(1).c_str(), "ORANGE juice");
+		}
+
+		// Test for a query search with no result
+		TEST_METHOD(testSearchNotFound) {
+			TextBuddy* testSession = new TextBuddy("testFile.txt");
+
+			testSession->processCommand("add wine");
+			testSession->processCommand("add beer");
+			testSession->processCommand("add more beer");
+
+			string result1 = testSession->processCommand("search Vodka");
+			Assert::AreEqual("Cannot find \"Vodka\" in the file!\n", result1.c_str());
+			
+			vector<string>* result2 = testSession->giveResult();
+			unsigned expectedSize = 0;
+			Assert::AreEqual(expectedSize, result2->size());
 		}
 	};
 }

@@ -6,11 +6,13 @@
 *
 * Command parsing assumptions:
 * - No other commands other than Add, Clear, Display, Delete, Exit
-* - Add only has one argument
-* - Clear has no arguments
-* - Display has no arguments
-* - Delete has one integer argument
-* - Exit has no arguments
+* - Add only takes one argument
+* - Clear takes no arguments
+* - Display takes no arguments
+* - Delete takes one integer argument
+* - Exit takes no arguments
+* - Sort takes no arguments
+* - Search takes up to one argument. If no argument is specified, display is called.
 *
 * Command line assumptions:
 * - Program is run using TextBuddy.exe targetFileName.exe
@@ -27,7 +29,7 @@
 using namespace std;
 
 const enum COMMAND_TYPE {
-	ADD, CLEAR, DELETE, DISPLAY, SORT, EXIT, INVALID
+	ADD, CLEAR, DELETE, DISPLAY, SORT, SEARCH, EXIT, INVALID
 };
 const string ERROR_NO_FILENAME = "No filename specified! Usage: %s <FILENAME>\nUsing default filename: %s\n";
 const string ERROR_CANNOT_OPEN_FILE = "Cannot open file %s";
@@ -37,6 +39,8 @@ const string PRINT_BUFFER = "Print buffer.\n";
 const string ADD_COMPLETE = "added to %s: \"%s\"\n";
 const string DELETE_COMPLETE = "deleted from %s: \"%s\"\n";
 const string SORT_COMPLETE = "%s has been sorted alphabetically.\n";
+const string SEARCH_CANNOT_FIND = "Cannot find \"%s\" in the file!\n";
+const string SEARCH_FOUND = "Found \"%s\" in the following lines:\n";
 const string CLEAR_COMPLETE = "all content deleted from %s\n";
 const string FILE_EMPTY = "%s is empty.\n";
 const string WRONG_COMMAND_FORMAT = "Command error.\n";
@@ -66,6 +70,9 @@ public:
 		} break;
 		case(DISPLAY) : {
 			return display(command);
+		} break;
+		case (SEARCH) : {
+			return search(command);
 		} break;
 		case (SORT) : {
 			return sortAlphabetically(command);
@@ -119,10 +126,15 @@ public:
 		return &textData;
 	}
 
+	vector<string>* giveResult() {
+		return &searchResult;
+	}
+
 private:
 
 	string targetFile;
 	vector<string> textData;
+	vector<string> searchResult;
 	char buffer[255];
 
 	// I-O methods
@@ -196,13 +208,17 @@ private:
 			return buffer;
 		}
 
+		display(textData);
+
+		return OPERATION_SUCCESSFUL;
+	}
+
+	void display(vector<string> textData) {
 		int index = 0;
 		for (vector<string>::const_iterator i = textData.begin(); i != textData.end(); ++i) {
 			index++;
 			cout << index << ". " << *i << "\n";
 		}
-
-		return OPERATION_SUCCESSFUL;
 	}
 
 	// Calls quickSort
@@ -215,6 +231,40 @@ private:
 
 		sprintf_s(buffer, SORT_COMPLETE.c_str(), targetFile.c_str());
 		return buffer;
+	}
+
+	string search(string command) {
+		int firstWordPos = firstSpacePosition(command);
+		if (firstWordPos == -1) {
+			display(textData);
+			return OPERATION_SUCCESSFUL;
+		}
+
+		string userQuery = command.substr(firstWordPos + 1);
+		string toBeSearched = toLowerCase(userQuery);
+
+		searchResult.clear();
+		bool foundFlag = false;
+
+		for (vector<string>::const_iterator i = textData.begin(); i != textData.end(); ++i) {
+			size_t found = toLowerCase(*i).find(toBeSearched);
+			if (found != string::npos) {
+				foundFlag = true;
+				searchResult.push_back(*i);
+			}
+		}
+
+		if (foundFlag) {
+			sprintf_s(buffer, SEARCH_FOUND.c_str(), userQuery.c_str());
+			printBuffer(buffer);
+
+			display(searchResult);
+
+			return OPERATION_SUCCESSFUL;
+		} else {
+			sprintf_s(buffer, SEARCH_CANNOT_FIND.c_str(), userQuery.c_str());
+			return buffer;
+		}
 	}
 
 	// Extracts index position to be deleted
@@ -237,23 +287,19 @@ private:
 	COMMAND_TYPE determineCommandType(string commandWord) {
 		if (commandWord == "add") {
 			return ADD;
-		}
-		else if (commandWord == "clear") {
+		} else if (commandWord == "clear") {
 			return CLEAR;
-		}
-		else if (commandWord == "delete") {
+		} else if (commandWord == "delete") {
 			return DELETE;
-		}
-		else if (commandWord == "display") {
+		} else if (commandWord == "display") {
 			return DISPLAY;
-		}
-		else if (commandWord == "sort") {
+		} else if (commandWord == "sort") {
 			return SORT;
-		}
-		else if (commandWord == "exit" || commandWord == "") {
+		} else if (commandWord == "search") {
+			return SEARCH;
+		} else if (commandWord == "exit" || commandWord == "") {
 			return EXIT;
-		}
-		else {
+		} else {
 			return INVALID;
 		}
 	}
